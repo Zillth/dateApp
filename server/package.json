@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Just a date app",
   "main": "index.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "start": "nodemon index.js"
   },
@@ -14,5 +14,9 @@
     "mernApp"
   ],
   "author": "Alan Flores",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^8.5.1"
+  }
 }
