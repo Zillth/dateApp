@@ -5,7 +5,7 @@ import userModel from '../models/user.js'
 
 const secret = process.env.TOKEN_SECRET
 
-export const SignIn = async (req, res) => {
+export const signIn = async (req, res) => {
     const { email, password } = req.body
     try {
         const user = await userModel.findOne({ email })
