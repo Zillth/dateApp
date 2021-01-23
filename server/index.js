@@ -16,7 +16,7 @@ app.use(cors())
 
 // Routes
 app.use('/', (req, res) => { res.status(200).json({ message: "Welcome to date app api" }) })
-app.use('/user', userRouter)
+app.use('/users', userRouter)
 
 //Mongo atlas connection url
 const CONNECTION_URL = process.env.CONNECTION_URL
