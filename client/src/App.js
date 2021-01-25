@@ -1,6 +1,8 @@
+import Auth from "./components/Auth/Auth";
+
 function App() {
   return (
-    <h1>Hello world!</h1>
+    <Auth />
   );
 }
 
