@@ -10,6 +10,8 @@ import { reducers } from './reducers'
 import { ThemeProvider } from '@material-ui/styles'
 import { theme } from './theme'
 
+import './index.css'
+
 const store = createStore(reducers, compose(applyMiddleware(thunk)))
 
 ReactDOM.render(

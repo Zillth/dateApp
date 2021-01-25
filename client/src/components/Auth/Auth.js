@@ -59,8 +59,8 @@ const Auth = () => {
 
     return (
         <Container component="main" maxWidth="xs">
-            <Grow in timeout={600}>
-                <Paper className={classes.paper} elevation={3}>
+            <Grow in timeout={500}>
+                <Paper className={classes.paper} elevation={5}>
                     <Avatar className={classes.avatar}>
                         <LockOutlinedIcon />
                     </Avatar>
