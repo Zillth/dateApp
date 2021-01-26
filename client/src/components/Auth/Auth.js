@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import Icon from './Icon';
-import Input from './Input';
+import Icon from './Icon'
+import Input from '../Inputs/Input'
+import RadioInput from '../Inputs/RadioInput'
 
 import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
@@ -13,7 +14,7 @@ import { Grow } from '@material-ui/core'
 import { signIn, signUp } from '../../actions/auth'
 import { AUTH } from '../../constants/actionTypes'
 import { GoogleLogin } from 'react-google-login'
-import RadioInput from './RadioInput';
+
 
 const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '' }
 

@@ -27,7 +27,4 @@ export default makeStyles((theme) => ({
     googleButton: {
         marginBottom: theme.spacing(2),
     },
-    radioInput: {
-        marginLeft: theme.spacing(2)
-    },
 }))
