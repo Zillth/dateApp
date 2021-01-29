@@ -3,10 +3,12 @@ import { AppBar, Tabs, Tab, useTheme } from '@material-ui/core'
 import SwipeableViews from 'react-swipeable-views'
 import TabPanel from './TabPanel'
 import Hobbies from './Hobbies'
+import useStyles from './styles' 
 
 const Panel = () => {
     const [tabIndex, setTabIndex] = useState(0)
     const theme = useTheme()
+    const classes = useStyles()
 
     const handleChangeBar = (event, newValue) => {
         setTabIndex(newValue);
@@ -17,7 +19,7 @@ const Panel = () => {
     }
     return (
         <>
-            <AppBar position="static" color="default">
+            <AppBar position="static" color="default" className={classes.appBar}>
                 <Tabs value={tabIndex} onChange={handleChangeBar} indicatorColor="primary" textColor="primary" variant="fullWidth">
                     <Tab label="Posts" />
                     <Tab label="Hobbies" />
