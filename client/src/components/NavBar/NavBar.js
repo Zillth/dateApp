@@ -3,15 +3,23 @@ import { AppBar, Avatar, Badge, Button, Grid, Hidden, IconButton, Menu, MenuItem
 import MenuIcon from '@material-ui/icons/Menu'
 import useStyles from './style'
 import MailIcon from '@material-ui/icons/Mail'
+import SideBar from './SideBar';
 
 const NavBar = () => {
     const classes = useStyles()
     const [user, setUser] = useState(null)
     const [anchorEl, setAnchorEl] = useState(null)
+    const [sidebarOpen, setSidebarOpen] = useState(false)
 
     const handleOpenMenu = (e) => setAnchorEl(e.currentTarget)
     const handleCloseMenu = () => setAnchorEl(null)
     const handleViewProfile = () => { handleCloseMenu() }
+    const toggleDrawer = (open) => (event) => {
+        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+            return;
+        }
+        setSidebarOpen(open)
+    }
 
     const renderMenu = (
         <Menu
@@ -28,15 +36,16 @@ const NavBar = () => {
     )
 
     return (
-        <AppBar position="static">
+        <AppBar position="static" className={classes.navBar}>
             <Toolbar>
                 <Grid container>
                     {user && (
-                        <Hidden smUp>
+                        <Hidden mdUp>
                             <Grid item className={classes.gridItem}>
-                                <IconButton edge="start" color="inherit">
+                                <IconButton edge="start" color="inherit" onClick={toggleDrawer(true)}>
                                     <MenuIcon />
                                 </IconButton>
+                                <SideBar orientation='left' items={['HOME', 'FIND PEOPLE', 'SET INTEREST', 'PROFILE', 'LOGOUT']} open={sidebarOpen} toggleDrawer={toggleDrawer} />
                             </Grid>
                         </Hidden>
 
@@ -51,28 +60,30 @@ const NavBar = () => {
                             <Button color="inherit" onClick={() => setUser(true)}>Login</Button>
                         ) : (
                                 <>
-                                    <div className={classes.nav}>
-                                        <IconButton edge="end" color="inherit" className={classes.navButton}>
-                                            <Typography variant="body2">HOME</Typography>
-                                        </IconButton>
-                                        <IconButton edge="end" color="inherit" className={classes.navButton}>
-                                            <Typography variant="body2">FIND PEOPLE</Typography>
-                                        </IconButton>
-                                        <IconButton edge="end" color="inherit" className={classes.navButton}>
-                                            <Typography variant="body2">SET INTEREST</Typography>
-                                        </IconButton>
-                                    </div>
-
+                                    <Hidden smDown>
+                                        <div className={classes.nav}>
+                                            <IconButton edge="end" color="inherit" className={classes.navButton}>
+                                                <Typography variant="body2">HOME</Typography>
+                                            </IconButton>
+                                            <IconButton edge="end" color="inherit" className={classes.navButton}>
+                                                <Typography variant="body2">FIND PEOPLE</Typography>
+                                            </IconButton>
+                                            <IconButton edge="end" color="inherit" className={classes.navButton}>
+                                                <Typography variant="body2">SET INTEREST</Typography>
+                                            </IconButton>
+                                        </div>
+                                    </Hidden>
                                     <IconButton edge="end" color="inherit">
                                         <Badge color="secondary" badgeContent={4} className={classes.badge}>
                                             <MailIcon />
                                         </Badge>
                                     </IconButton>
-
-                                    <IconButton edge="end" color="inherit" onClick={handleOpenMenu} className={classes.ToEnd}>
-                                        <Avatar alt="user" src="https://randomuser.me/api/portraits/men/75.jpg" aria-controls="simple-menu" aria-haspopup="true" />
-                                    </IconButton>
-                                    {renderMenu}
+                                    <Hidden smDown>
+                                        <IconButton edge="end" color="inherit" onClick={handleOpenMenu} className={classes.ToEnd} aria-controls="simple-menu">
+                                            <Avatar alt="user" src="https://randomuser.me/api/portraits/men/75.jpg" />
+                                        </IconButton>
+                                        {renderMenu}
+                                    </Hidden>
                                 </>
                             )}
                     </Grid>
