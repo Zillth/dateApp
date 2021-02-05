@@ -15,7 +15,7 @@ const RadioInput = ({ title, values }) => {
             <FormLabel component="legend">{title}</FormLabel>
             <RadioGroup aria-label={title} name="gender1" value={value} onChange={handleChange}>
                 {values.map(({ value, disabled, label }) => (
-                    <FormControlLabel value={value} control={<Radio />} label={label} disabled={disabled} />
+                    <FormControlLabel key={value} value={value} control={<Radio />} label={label} disabled={disabled} />
                 ))}
             </RadioGroup>
         </FormControl>

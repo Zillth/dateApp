@@ -1,7 +1,10 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
 
 import userModel from '../models/user.js'
+import userInfo from '../models/userInfo.js'
+dotenv.config()
 
 const secret = process.env.TOKEN_SECRET
 
@@ -20,15 +23,30 @@ export const signIn = async (req, res) => {
 }
 
 export const signUp = async (req, res) => {
-    const { firstName, lastName, email, password } = req.body
+    const { firstName, lastName, email, password, confirmPassword } = req.body
+    if (password !== confirmPassword) return res.status(400).json({ message: "Passwords doesn't match" })
     try {
-        const user = userModel.findOne({ email })
+        const user = await userModel.findOne({ email })
         if (user) return res.status(400).json({ message: "User already exist" })
         const hashedPassword = await bcrypt.hash(password, 12)
-        const result = await userModel.create({ email, password: hashedPassword, name: `${firstName} ${lastName}` })
-        const token = jwt.sign({ email: result.email, id: result._id }, secret, { expiresIn: "24h" })
-        res.status(201).json({ result, token })
+        const userCreated = await userModel.create({ email, password: hashedPassword })
+        await userInfo.create({ userId: userCreated._id, name: `${firstName} ${lastName}` })
+        const token = jwt.sign({ email: userCreated.email, id: userCreated._id }, secret, { expiresIn: "24h" })
+        res.status(201).json({ userCreated, token })
     } catch (error) {
-        res.status(500).json({message: "Something went wrong"})
+        res.status(500).json({ message: "Something went wrong" })
+    }
+}
+
+export const setFromGoogle = async (req, res) => {
+    const { name, imageUrl, googleId } = req.body
+    try {
+        const user = await userInfo.findOne({ userId: googleId })
+        if (user) return res.status(400)
+        const userInfoSetted = await userInfo.create({ name, image: imageUrl, userId: googleId })
+        res.status(200).json({ userInfoSetted })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: "Something went wrong" })
     }
 }

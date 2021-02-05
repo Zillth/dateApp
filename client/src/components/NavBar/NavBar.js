@@ -1,13 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AppBar, Avatar, Badge, Button, Grid, Hidden, IconButton, Menu, MenuItem, Toolbar, Typography } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 import useStyles from './style'
 import MailIcon from '@material-ui/icons/Mail'
 import SideBar from './SideBar';
+import { Link, useLocation, useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import * as actionType from '../../constants/actionTypes';
+import decode from 'jwt-decode';
 
 const NavBar = () => {
+    const dispatch = useDispatch()
+    const location = useLocation()
     const classes = useStyles()
-    const [user, setUser] = useState(null)
+    const history = useHistory()
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')))
     const [anchorEl, setAnchorEl] = useState(null)
     const [sidebarOpen, setSidebarOpen] = useState(false)
 
@@ -21,6 +28,21 @@ const NavBar = () => {
         setSidebarOpen(open)
     }
 
+    const logout = () => {
+        dispatch({ type: actionType.LOGOUT })
+        history.replace('/')
+        setUser(null)
+    }
+
+    useEffect(() => {
+        const token = user?.token
+        if (token) {
+            const decodedToken = decode(token)
+            if (decodedToken.exp * 1000 < new Date().getTime()) logout()
+        }
+        setUser(JSON.parse(localStorage.getItem('profile')))
+    }, [location])
+
     const renderMenu = (
         <Menu
             anchorEl={anchorEl}
@@ -30,8 +52,8 @@ const NavBar = () => {
             transformOrigin={{ vertical: 'top', horizontal: 'right' }}
             open={Boolean(anchorEl)}
             onClose={handleCloseMenu}>
-            <MenuItem onClick={handleViewProfile}>Profile</MenuItem>
-            <MenuItem onClick={() => { handleCloseMenu(); setUser(false) }}>Logout</MenuItem>
+            <MenuItem component={Link} to='/profile' onClick={handleViewProfile}>Profile</MenuItem>
+            <MenuItem onClick={() => { handleCloseMenu(); logout() }}>Logout</MenuItem>
         </Menu>
     )
 
@@ -45,19 +67,17 @@ const NavBar = () => {
                                 <IconButton edge="start" color="inherit" onClick={toggleDrawer(true)}>
                                     <MenuIcon />
                                 </IconButton>
-                                <SideBar orientation='left' items={['HOME', 'FIND PEOPLE', 'SET INTEREST', 'PROFILE', 'LOGOUT']} open={sidebarOpen} toggleDrawer={toggleDrawer} />
+                                <SideBar logout={logout} orientation='left' items={['HOME', 'FIND PEOPLE', 'SET INTEREST', 'PROFILE', 'LOGOUT']} open={sidebarOpen} toggleDrawer={toggleDrawer} />
                             </Grid>
                         </Hidden>
 
                     )}
                     <Grid item className={classes.gridItem}>
-                        <Typography variant="h5">
-                            Date App
-                        </Typography>
+                        <Typography className={classes.heading} variant="h5" component={Link} to="/" color="inherit">Date App</Typography>
                     </Grid>
                     <Grid item className={classes.menuContent} lg={11} sm={9}>
                         {!user ? (
-                            <Button color="inherit" onClick={() => setUser(true)}>Login</Button>
+                            <Button color="inherit" component={Link} to="/login">Login</Button>
                         ) : (
                                 <>
                                     <Hidden smDown>

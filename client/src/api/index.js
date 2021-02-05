@@ -12,3 +12,5 @@ export const deleteUser = (userId) => API.delete(`/users/${userId}`)
 // Auth
 export const signIn = (formData) => API.post('/users/signIn', formData)
 export const signUp = (formData) => API.post('/users/signUp', formData)
+// Google
+export const setUserInfoFromGoogle = (googleInfo) => API.post('/users/setFromGoogle', googleInfo) 

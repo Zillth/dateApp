@@ -27,5 +27,8 @@ export default makeStyles(theme => ({
     },
     navBar: {
         marginBottom: theme.spacing(3)
+    },
+    heading: {
+        textDecoration: 'none'
     }
 }))

@@ -3,8 +3,9 @@ import { Drawer, List, ListItem, ListItemIcon, ListItemText } from '@material-ui
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import clsx from 'clsx';
 import useStyles from './style'
+import { Link } from 'react-router-dom';
 
-const SideBar = ({ items, open, toggleDrawer, orientation }) => {
+const SideBar = ({ items, open, toggleDrawer, orientation, logout }) => {
     const classes = useStyles()
 
     const list = (orientation, items) => (
@@ -14,12 +15,18 @@ const SideBar = ({ items, open, toggleDrawer, orientation }) => {
             <List>
                 {items.map(item => (
                     <ListItem button key={item}>
-                        {item === 'LOGOUT' && (
-                            <ListItemIcon>
-                                <ExitToAppIcon />
-                            </ListItemIcon>
-                        )}
-                        <ListItemText primary={item} />
+                        {item === 'PROFILE' ? (
+                            <ListItemText component={Link} to='/profile' primary={item} />
+                        ) : item === 'LOGOUT' ? (
+                            <div onClick={logout} style={{display: 'flex'}}>
+                                <ListItemIcon>
+                                    <ExitToAppIcon />
+                                </ListItemIcon>
+                                <ListItemText primary={item} />
+                            </div>
+                        ) : (
+                                    <ListItemText primary={item} />
+                                )}
                     </ListItem>
                 ))}
             </List>

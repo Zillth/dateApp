@@ -1,4 +1,3 @@
-
 import express from 'express'
 import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
@@ -14,9 +13,10 @@ app.use(bodyParser.json({ limit: '30mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 app.use(cors())
 
-// Routes
-app.use('/', (req, res) => { res.status(200).json({ message: "Welcome to date app api" }) })
+// Route
 app.use('/users', userRouter)
+app.use('/', (req, res) => { res.status(200).json({ message: "Welcome to date app api" }) })
+
 
 //Mongo atlas connection url
 const CONNECTION_URL = process.env.CONNECTION_URL
@@ -26,4 +26,4 @@ mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: tr
     .then(() => app.listen(PORT, () => console.log(`Server running on port: http://localhost:${PORT}`)))
     .catch(err => console.log(err))
 
-mongoose.set('useFindAndModify', false)
+mongoose.set('useFindAndModify', false) 
