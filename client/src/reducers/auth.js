@@ -1,15 +1,25 @@
 import * as actionType from '../constants/actionTypes'
-import * as api from '../api'
 
-export const auth = (state = { authData: null }, action) => {
+const initialState = {
+    _id: '',
+    name: '',
+    email: '',
+    hobbies: [],
+    description: '',
+    avatar: ''
+}
+
+export const auth = (state = initialState, action) => {
+    let { _id, name, email, hobbies, description, avatar } = action.data?.user || initialState
     switch (action.type) {
         case actionType.AUTH:
-            if(action?.data?.result) api.setUserInfoFromGoogle(action.data?.result)
-            localStorage.setItem('profile', JSON.stringify({ ...action?.data }))
-            return { ...state, authData: action.data, loading: false, errors: null }
+            localStorage.setItem('profile', JSON.stringify({ token: action?.data?.token }))
+            return { ...state, _id, name, email, hobbies, description, avatar }
         case actionType.LOGOUT:
             localStorage.clear()
-            return {...state, authData: null, loading: false, errors: null}
+            return { ...state, _id, name, email, hobbies, description, avatar }
+        case actionType.SET_AUTH:
+            return { ...state, _id, name, email, hobbies, description, avatar }
         default:
             return state
     }

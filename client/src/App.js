@@ -6,14 +6,14 @@ import { Container } from "@material-ui/core";
 
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
+const App = () => {
 
-function App() {
   return (
     <BrowserRouter>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <NavBar />
         <Switch>
-          <Route path="/" exact component={Home}/>
+          <Route path="/" exact component={Home} />
           <Route path="/login" exact component={Auth} />
           <Route path="/profile" exact component={Profile} />
         </Switch>

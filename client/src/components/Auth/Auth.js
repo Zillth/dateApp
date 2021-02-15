@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import Icon from './Icon'
 import Input from '../Inputs/Input'
-import RadioInput from '../Inputs/RadioInput'
 
 import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
@@ -12,7 +11,6 @@ import useStyles from './styles'
 import { Grow } from '@material-ui/core'
 
 import { signIn, signUp } from '../../actions/auth'
-import { AUTH } from '../../constants/actionTypes'
 import { GoogleLogin } from 'react-google-login'
 
 
@@ -43,12 +41,10 @@ const Auth = () => {
         }
     };
 
-    const googleSuccess = async (res) => {
-        const result = res?.profileObj
-        const token = res?.tokenId
+    const googleSuccess = (res) => {
+        const googleObj = res?.profileObj
         try {
-            dispatch({ type: AUTH, data: { result, token } })
-            history.replace('/')
+            dispatch(signIn({ googleObj }, history))
         } catch (error) {
             console.log(error)
         }
@@ -72,11 +68,6 @@ const Auth = () => {
                                 <>
                                     <Input name="firstName" label="First Name" handleChange={handleChange} autoFocus half />
                                     <Input name="lastName" label="Last Name" handleChange={handleChange} half />
-                                    <RadioInput title="Gender" values={[
-                                        {value: "female", label: "Female"},
-                                        {value: "male", label: "Male"},
-                                        {value: "other", label: "Other"}
-                                    ]}/>
                                 </>
                             )}
                             <Input name="email" label="Email Address" handleChange={handleChange} type="email" />
